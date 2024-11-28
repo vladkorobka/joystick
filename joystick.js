@@ -83,24 +83,20 @@ class Joystick {
         document.querySelector("body").style.background = e.target.value;
       });
 
-    document.querySelector("#toggle-size").addEventListener("input", (e) => {
-      if (e.target.value < this.options.radius) {
-        this.options.toggleSize = e.target.value;
-        this.joystickToggle.style.setProperty(
-          "--toggle-size",
-          `${this.options.toggleSize}rem`
-        );
-      }
+    document.querySelector("#toggle-size").addEventListener("change", (e) => {
+      this.options.toggleSize = e.target.value;
+      this.joystickToggle.style.setProperty(
+        "--toggle-size",
+        `${this.options.toggleSize}rem`
+      );
     });
 
-    document.querySelector("#radius").addEventListener("input", (e) => {
-      if (e.target.value > this.options.toggleSize) {
-        this.options.radius = e.target.value;
-        this.joystickBase.style.setProperty(
-          "--radius",
-          `${this.options.radius}rem`
-        );
-      }
+    document.querySelector("#radius").addEventListener("change", (e) => {
+      this.options.radius = e.target.value;
+      this.joystickBase.style.setProperty(
+        "--radius",
+        `${this.options.radius}rem`
+      );
     });
   }
 
