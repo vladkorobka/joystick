@@ -40,8 +40,8 @@ main {
 }
 
 .gamepad {
-  position: relative;
-  bottom: -3rem;
+  position: absolute;
+  bottom: 5vh;
   left: 3rem;
   display: flex;
   justify-content: space-between;
