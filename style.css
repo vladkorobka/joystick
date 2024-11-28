@@ -49,6 +49,13 @@ main {
   width: 90%;
 }
 
+@media (max-width: 768px) {
+  .gamepad {
+    bottom: -10vh;
+    left: 2rem;
+  }
+}
+
 .joystick {
   position: relative;
   touch-action: none;
