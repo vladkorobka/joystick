@@ -1,6 +1,6 @@
 # Joystick
 
-[DEMO]([https://vladkorobka.github.io/layout_museum/])<br>
+[DEMO](https://vladkorobka.github.io/joystick/)
 
 ## How to Run the Application Locally
 
