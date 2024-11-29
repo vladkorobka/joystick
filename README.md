@@ -9,12 +9,5 @@
 - Open your terminal and navigate to your desired projects folder.
 - Clone the repository by running the following command:
   ```git clone [PASTE_URL_HERE]```
-### 2. Install Dependencies
-- Open the project folder in your favorite text editor.
-- Install all the packages by running:
-  ```npm install```
-- If you encounter any installation issues, try using the following command:
-```npm install --legacy-peer-deps```
-### 3. Start the Application
-- To run the application locally, execute:
-```npm start```
+### 2. Run
+- Run the index.html in your browser
