@@ -19,7 +19,7 @@
     <main>
       <div class="options">
         <div class="label-wrapper">
-          <label for="joystick"> Joystick color: </label>
+          <label for="joystick">Joystick color: </label>
           <input type="color" value="#dfd7f1" id="joystick-color" />
         </div>
 
@@ -29,13 +29,19 @@
         </div>
 
         <div class="label-wrapper">
-          <label for="radius"> Radius:</label>
+          <label for="radius">Radius:</label>
           <input type="number" id="radius" />
+        </div>
+
+        <div class="label-wrapper">
+          <label for="vibration">Vibration:</label>
+          <input type="checkbox" id="vibration" />
         </div>
       </div>
 
       <div class="gamepad">
         <div id="joystick-container"></div>
+        <div id="joystick-container2"></div>
 
         <div class="buttons-container">
           <div class="button btnX">X</div>

@@ -6,10 +6,13 @@ class Joystick {
     this.container = document.querySelector(container);
     this.toggleSizeElement = document.querySelector("#toggle-size");
     this.radiusElement = document.querySelector("#radius");
+    this.vibration = document.querySelector("#vibration");
     this.options = {
+      name: options.name,
       radius: options.radius,
       toggleSize: options.toggleSize,
-      onVibrate: options.onVibrate ?? true,
+      // onVibrate: options.onVibrate ?? true,
+      // onVibrate: document.querySelector("#vibration").value
       constraint: options.constraint || "free", // "free" | "horizontal" | "vertical" |
     };
   }
@@ -67,6 +70,7 @@ class Joystick {
     const endEvent = () => {
       this.isDragging = false;
       this.resetPosition();
+      console.log(this.options.name, ":", [0, 0]);
     };
 
     this.joystickBase.addEventListener("mousedown", startEvent);
@@ -98,6 +102,13 @@ class Joystick {
         `${this.options.radius}rem`
       );
     });
+
+    document
+      .querySelector("#vibration")
+      .addEventListener(
+        "change",
+        (e) => (this.options.onVibrate = e.target.checked)
+      );
   }
 
   updatePosition(event) {
@@ -144,13 +155,12 @@ class Joystick {
     const normalizedX = dx / maxDistance;
     const normalizedY = dy / maxDistance;
     this.emit("move", { x: normalizedX, y: normalizedY });
-    console.log([parseInt(dx), parseInt(dy)]);
+    console.log(this.options.name, ":", [parseInt(dx), parseInt(dy)]);
   }
 
   resetPosition() {
     this.joystickToggle.style.transform = "translate(0, 0)";
     this.emit("end", { x: 0, y: 0 });
-    console.log([0, 0]);
   }
 
   emit(eventName, detail) {
@@ -160,6 +170,7 @@ class Joystick {
 }
 
 const joystick = new Joystick("#joystick-container", {
+  name: "j1",
   radius: 14,
   toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
@@ -167,3 +178,13 @@ const joystick = new Joystick("#joystick-container", {
 });
 
 joystick.init();
+
+const j2 = new Joystick("#joystick-container2", {
+  name: "j2",
+  radius: 14,
+  toggleSize: 6.5,
+  constraint: "free", // free, horizontal, vertical
+  onVibrate: true,
+});
+
+j2.init();
