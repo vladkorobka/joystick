@@ -103,9 +103,12 @@ class Joystick {
       );
     });
 
-    document
-      .querySelector("#vibration")
-      .addEventListener("change", (e) => (this.onVibrate = e.target.checked));
+    document.querySelector("#vibration").addEventListener("change", (e) => {
+      console.log(this.onVibrate);
+
+      this.onVibrate = e.target.checked;
+      console.log(this.onVibrate);
+    });
   }
 
   updatePosition(event) {
@@ -177,8 +180,8 @@ joystick.init();
 
 const j2 = new Joystick("#joystick-container2", {
   name: "j2",
-  radius: 14,
-  toggleSize: 6.5,
+  radius: 5,
+  toggleSize: 2,
   constraint: "free", // free, horizontal, vertical
 });
 
