@@ -12,7 +12,6 @@ class Joystick {
         name: options.name,
         radius: options.radius,
         toggleSize: options.toggleSize,
-        // onVibrate: options.onVibrate ?? true,
         constraint: options.constraint || "free", // "free" | "horizontal" | "vertical" |
       });
   }
@@ -180,12 +179,3 @@ const joystick = new Joystick("#joystick-container", {
 });
 
 joystick.init();
-
-const j2 = new Joystick("#joystick-container2", {
-  name: "j2",
-  radius: 5,
-  toggleSize: 2,
-  constraint: "free", // free, horizontal, vertical
-});
-
-j2.init();
