@@ -55,6 +55,7 @@ class Joystick {
     const startEvent = (e) => {
       e.preventDefault();
       this.isDragging = true;
+      this.currentJoystick = e.target;
       this.updatePosition(e.touches?.[0] || e);
       if (this.onVibrate && navigator.vibrate) {
         navigator.vibrate(50);
@@ -62,12 +63,14 @@ class Joystick {
     };
 
     const moveEvent = (e) => {
-      if (!this.isDragging) return;
+      if (!this.isDragging || this.currentJoystick !== this.joystickToggle)
+        return;
       e.preventDefault();
       this.updatePosition(e.touches?.[0] || e);
     };
 
     const endEvent = () => {
+      if (this.currentJoystick !== this.joystickToggle) return;
       this.isDragging = false;
       this.resetPosition();
       console.log(this.options.name, ":", [0, 0]);
