@@ -7,14 +7,14 @@ class Joystick {
     this.toggleSizeElement = document.querySelector("#toggle-size");
     this.radiusElement = document.querySelector("#radius");
     this.vibrationElement = document.querySelector("#vibration");
-    this.options = {
-      name: options.name,
-      radius: options.radius,
-      toggleSize: options.toggleSize,
-      // onVibrate: options.onVibrate ?? true,
-      onVibrate: this.vibrationElement.checked,
-      constraint: options.constraint || "free", // "free" | "horizontal" | "vertical" |
-    };
+    (this.onVibrate = this.vibrationElement.checked),
+      (this.options = {
+        name: options.name,
+        radius: options.radius,
+        toggleSize: options.toggleSize,
+        // onVibrate: options.onVibrate ?? true,
+        constraint: options.constraint || "free", // "free" | "horizontal" | "vertical" |
+      });
   }
 
   init() {
@@ -56,7 +56,7 @@ class Joystick {
       e.preventDefault();
       this.isDragging = true;
       this.updatePosition(e.touches?.[0] || e);
-      if (this.options.onVibrate && navigator.vibrate) {
+      if (this.onVibrate && navigator.vibrate) {
         navigator.vibrate(50);
       }
     };
@@ -105,10 +105,7 @@ class Joystick {
 
     document
       .querySelector("#vibration")
-      .addEventListener(
-        "change",
-        (e) => (this.options.onVibrate = e.target.checked)
-      );
+      .addEventListener("change", (e) => (this.onVibrate = e.target.checked));
   }
 
   updatePosition(event) {
@@ -174,7 +171,6 @@ const joystick = new Joystick("#joystick-container", {
   radius: 14,
   toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
-  onVibrate: true,
 });
 
 joystick.init();
@@ -184,7 +180,6 @@ const j2 = new Joystick("#joystick-container2", {
   radius: 14,
   toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
-  onVibrate: true,
 });
 
 j2.init();
