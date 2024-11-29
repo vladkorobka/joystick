@@ -6,13 +6,13 @@ class Joystick {
     this.container = document.querySelector(container);
     this.toggleSizeElement = document.querySelector("#toggle-size");
     this.radiusElement = document.querySelector("#radius");
-    this.vibration = document.querySelector("#vibration");
+    this.vibrationElement = document.querySelector("#vibration");
     this.options = {
       name: options.name,
       radius: options.radius,
       toggleSize: options.toggleSize,
       // onVibrate: options.onVibrate ?? true,
-      // onVibrate: document.querySelector("#vibration").value
+      onVibrate: this.vibrationElement.checked,
       constraint: options.constraint || "free", // "free" | "horizontal" | "vertical" |
     };
   }
