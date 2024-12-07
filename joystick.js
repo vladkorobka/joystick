@@ -176,8 +176,8 @@ joystick.init();
 
 const joystick2 = new Joystick("#joystick-container2", {
   name: "j2",
-  radius: 7,
-  toggleSize: 3,
+  radius: 14,
+  toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
   baseColor: "#f0f0f0",
   toggleColor: "#007bff",
