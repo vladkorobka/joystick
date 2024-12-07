@@ -7,18 +7,13 @@ class Joystick {
     this.toggleSizeElement = document.querySelector("#toggle-size");
     this.radiusElement = document.querySelector("#radius");
     this.vibrationElement = document.querySelector("#vibration");
-    this.onVibrate = this.vibrationElement.checked;
-
-    this.options = {
-      name: options.name,
-      radius: options.radius,
-      toggleSize: options.toggleSize,
-      baseColor: options.baseColor || "#ccc",
-      toggleColor: options.toggleColor || "#333",
-      constraint: options.constraint || "free", // "free" | "horizontal" | "vertical"
-    };
-
-    this.activeTouches = new Map();
+    (this.onVibrate = this.vibrationElement.checked),
+      (this.options = {
+        name: options.name,
+        radius: options.radius,
+        toggleSize: options.toggleSize,
+        constraint: options.constraint || "free", // "free" | "horizontal" | "vertical" |
+      });
   }
 
   init() {
@@ -58,51 +53,43 @@ class Joystick {
   initEvents() {
     const startEvent = (e) => {
       e.preventDefault();
-      const id = e.pointerId || 0;
-      if (this.activeTouches.has(id)) return;
-      this.activeTouches.set(id, e);
-
-      if (this.activeTouches.size === 1) {
-        this.isDragging = true;
-        this.updatePosition(e);
-        if (this.onVibrate && navigator.vibrate) {
-          navigator.vibrate(50);
-        }
+      this.isDragging = true;
+      this.currentJoystick = e.target;
+      this.updatePosition(e.touches?.[0] || e);
+      if (this.onVibrate && navigator.vibrate) {
+        navigator.vibrate(50);
       }
     };
 
     const moveEvent = (e) => {
-      const id = e.pointerId || 0;
-      if (!this.activeTouches.has(id)) return;
-      if (this.isDragging) this.updatePosition(e);
+      if (!this.isDragging || this.currentJoystick !== this.joystickToggle)
+        return;
+      e.preventDefault();
+      this.updatePosition(e.touches?.[0] || e);
     };
 
-    const endEvent = (e) => {
-      const id = e.pointerId || 0;
-      this.activeTouches.delete(id);
-
-      if (this.activeTouches.size === 0) {
-        this.isDragging = false;
-        this.resetPosition();
-      }
+    const endEvent = () => {
+      if (this.currentJoystick !== this.joystickToggle) return;
+      this.isDragging = false;
+      this.resetPosition();
+      console.log(this.options.name, ":", [0, 0]);
     };
 
-    this.joystickBase.addEventListener("pointerdown", startEvent);
-    document.addEventListener("pointermove", moveEvent);
-    document.addEventListener("pointerup", endEvent);
-    document.addEventListener("pointercancel", endEvent);
+    this.joystickBase.addEventListener("mousedown", startEvent);
+    this.joystickBase.addEventListener("mousemove", moveEvent);
+    document.addEventListener("mouseup", endEvent);
+
+    this.joystickBase.addEventListener("touchstart", startEvent);
+    this.joystickBase.addEventListener("touchmove", moveEvent);
+    document.addEventListener("touchend", endEvent);
 
     document
       .querySelector("#joystick-color")
       .addEventListener("change", (e) => {
-        this.options.toggleColor = e.target.value;
-        this.joystickToggle.style.setProperty(
-          "--toggle-color",
-          this.options.toggleColor
-        );
+        document.querySelector("body").style.background = e.target.value;
       });
 
-    this.toggleSizeElement.addEventListener("change", (e) => {
+    document.querySelector("#toggle-size").addEventListener("change", (e) => {
       this.options.toggleSize = e.target.value;
       this.joystickToggle.style.setProperty(
         "--toggle-size",
@@ -110,7 +97,7 @@ class Joystick {
       );
     });
 
-    this.radiusElement.addEventListener("change", (e) => {
+    document.querySelector("#radius").addEventListener("change", (e) => {
       this.options.radius = e.target.value;
       this.joystickBase.style.setProperty(
         "--radius",
@@ -118,8 +105,11 @@ class Joystick {
       );
     });
 
-    this.vibrationElement.addEventListener("change", (e) => {
+    document.querySelector("#vibration").addEventListener("change", (e) => {
+      console.log(this.onVibrate);
+
       this.onVibrate = e.target.checked;
+      console.log(this.onVibrate);
     });
   }
 
@@ -128,13 +118,30 @@ class Joystick {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    let dx = x - this.center.x;
-    let dy = y - this.center.y;
+    let dx, dy;
 
-    if (this.options.constraint === "horizontal") dy = 0;
-    if (this.options.constraint === "vertical") dx = 0;
+    switch (this.options.constraint) {
+      case "free":
+        dx = x - this.center.x;
+        dy = y - this.center.y;
+        break;
 
-    const distance = Math.sqrt(dx ** 2 + dy ** 2);
+      case "horizontal":
+        dx = x - this.center.x;
+        dy = 0;
+        break;
+
+      case "vertical":
+        dx = 0;
+        dy = y - this.center.y;
+        break;
+
+      default:
+        dx = x - this.center.x;
+        dy = y - this.center.y;
+    }
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
     const maxDistance =
       (this.options.radius * this.baseSize) / 2 -
       (this.options.toggleSize * this.baseSize) / 2;
@@ -146,10 +153,11 @@ class Joystick {
     }
 
     this.joystickToggle.style.transform = `translate(${dx}px, ${dy}px)`;
+
     const normalizedX = dx / maxDistance;
     const normalizedY = dy / maxDistance;
-
     this.emit("move", { x: normalizedX, y: normalizedY });
+    console.log(this.options.name, ":", [normalizedX, normalizedY]);
   }
 
   resetPosition() {
@@ -168,19 +176,6 @@ const joystick = new Joystick("#joystick-container", {
   radius: 14,
   toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
-  baseColor: "#f0f0f0",
-  toggleColor: "#007bff",
 });
 
 joystick.init();
-
-const joystick2 = new Joystick("#joystick-container2", {
-  name: "j2",
-  radius: 7,
-  toggleSize: 3,
-  constraint: "free", // free, horizontal, vertical
-  baseColor: "#f0f0f0",
-  toggleColor: "#007bff",
-});
-
-joystick2.init();
