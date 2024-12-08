@@ -83,7 +83,7 @@ class Joystick {
       const id = e.pointerId || 0;
       this.activeTouches.delete(id);
 
-      if (this.activeTouches.size === 0) {
+      if (!this.activeTouches.size) {
         this.isDragging = false;
         this.resetPosition();
       }
@@ -167,8 +167,8 @@ class Joystick {
 
 const joystick = new Joystick("#joystick-container", {
   name: "j1",
-  radius: 14,
-  toggleSize: 6.5,
+  radius: 10,
+  toggleSize: 5,
   constraint: "free", // free, horizontal, vertical
   baseColor: "#f0f0f0",
   toggleColor: "#e0d8ef",
@@ -178,8 +178,8 @@ joystick.init();
 
 const joystick2 = new Joystick("#joystick-container2", {
   name: "j2",
-  radius: 14,
-  toggleSize: 6.5,
+  radius: 10,
+  toggleSize: 5,
   constraint: "free", // free, horizontal, vertical
   baseColor: "#f0f0f0",
   toggleColor: "#e0d8ef",
