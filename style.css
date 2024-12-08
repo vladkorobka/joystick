@@ -1,5 +1,5 @@
 :root {
-  --base-size: 1rem; /* 1rem = базовий розмір шрифту (16px за замовчуванням) */
+  --base-size: 1rem;
 }
 
 * {
@@ -44,7 +44,8 @@ main {
   bottom: 5vh;
   left: 3rem;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  gap: 3rem;
   align-items: end;
   width: 90%;
 }
@@ -77,7 +78,7 @@ main {
 .joystick-toggle {
   width: calc(var(--toggle-size, 3rem));
   height: calc(var(--toggle-size, 3rem));
-  background: #dfd7f1;
+  background: var(--toggle-color, #e0d8ef);
   border-radius: 50%;
   position: absolute;
   transition: 50ms;
@@ -85,7 +86,8 @@ main {
 }
 
 .buttons-container {
-  position: relative;
+  position: absolute;
+  right: 0;
   display: flex;
   align-items: end;
   width: auto;

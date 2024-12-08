@@ -74,7 +74,9 @@ class Joystick {
     const moveEvent = (e) => {
       const id = e.pointerId || 0;
       if (!this.activeTouches.has(id)) return;
-      if (this.isDragging) this.updatePosition(e);
+      if (this.isDragging) {
+        this.updatePosition(e);
+      }
     };
 
     const endEvent = (e) => {
@@ -169,18 +171,18 @@ const joystick = new Joystick("#joystick-container", {
   toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
   baseColor: "#f0f0f0",
-  toggleColor: "#007bff",
+  toggleColor: "#e0d8ef",
 });
 
 joystick.init();
 
 const joystick2 = new Joystick("#joystick-container2", {
   name: "j2",
-  radius: 10,
-  toggleSize: 4,
+  radius: 14,
+  toggleSize: 6.5,
   constraint: "free", // free, horizontal, vertical
   baseColor: "#f0f0f0",
-  toggleColor: "#007bff",
+  toggleColor: "#e0d8ef",
 });
 
 joystick2.init();
